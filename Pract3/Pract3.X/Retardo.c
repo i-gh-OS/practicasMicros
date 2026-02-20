@@ -21,9 +21,7 @@ int Retardo(uint16_t retardo_ms) {
     if (retardo_ms != 0) {
 
         for (i = 0; i < 8; i++) {
-
             t_PR = ((retardo_ms*5000)/ preescalados[i])-1;
-
             if  (t_PR <= 65535) {
                 tckps = i;
                 break;
@@ -41,8 +39,9 @@ int Retardo(uint16_t retardo_ms) {
     PR2 = t_PR;
     T2CON = 0x8000 | (tckps << 4);
 
-    while (IFS0bits.T2IF == 0); //como hemos visto en clase, no hace falta poner nada dentro
+    while (IFS0bits.T2IF == 0); 
     IFS0bits.T2IF = 0;
     T2CON = 0x0000;
     return 0;
 }
+

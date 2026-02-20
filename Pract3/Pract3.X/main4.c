@@ -1,11 +1,11 @@
 /* 
- * File:   main3.c
+ * File:   main4.c
  * Author: labmicros
  *
- * Created on February 6, 2026, 12:24 AM
+ * Created on February 8, 2026, 18:11 PM
  */
 
-#include <xc.h>
+ #include <xc.h>
 #include "Retardo.h"
 #include "Pic32Ini.h"
 
@@ -26,11 +26,11 @@ int main(void) {
     while (1) {
 
         // ON
-        LATC &= ~(1 << PIN_LED); //pongo 0 en el LED
-        Retardo(on_ms); //espero 0s en 1ª iteracion 1ms en la 2ª...
+        LATC &= ~(1 << PIN_LED);
+        Retardo(on_ms);
 
         // OFF
-        LATC |= (1 << PIN_LED); //pongo 1 en el LED
+        LATC |= (1 << PIN_LED);
         Retardo(PERIODO_MS - on_ms);
 
         // actualizar on_ms para el efecto "latido"
@@ -44,4 +44,3 @@ int main(void) {
     }
     return 0;
 }
-

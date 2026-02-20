@@ -15,7 +15,7 @@
  */
 /* ************************************************************************** */
 
-#ifndef RETARDO_H    /* Guard against multiple inclusion */
+#ifndef RETARDO_H  
 #define RETARDO_H
 
 #include <xc.h>
