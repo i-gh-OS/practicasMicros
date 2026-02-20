@@ -68,4 +68,5 @@ int main(void){
             LATCSET = (1<<LED_RC0);
         }
     }
+    return 0;
 }
