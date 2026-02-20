@@ -5,12 +5,13 @@
  * Created on February 8, 2026, 18:11 PM
  */
 
- #include <xc.h>
+#include <xc.h>
 #include "Retardo.h"
 #include "Pic32Ini.h"
 
-#define PIN_LED 0
+#define PIN_RC0 0
 #define PERIODO_MS 20
+#define PIN_RC3 3
 
 int main(void) {
 
@@ -20,20 +21,21 @@ int main(void) {
     TRISA = 0x0000;
     TRISB = 0x0000;
 
-    //uint16_t retardo_ms = 20, retardo_ant = 21;
     uint16_t on_ms = 0;
+    uint16_t ticks = 0;
+    int dir = 1;
 
     while (1) {
 
-        // ON
-        LATC &= ~(1 << PIN_LED);
+        // RC0 ON
+        LATC &= ~(1 << PIN_RC0);
         Retardo(on_ms);
 
-        // OFF
-        LATC |= (1 << PIN_LED);
+        // RC0 OFF
+        LATC |= (1 << PIN_RC0);
         Retardo(PERIODO_MS - on_ms);
 
-        // actualizar on_ms para el efecto "latido"
+        // latido
         if (on_ms == PERIODO_MS) {
             dir = -1;
         }
@@ -41,6 +43,14 @@ int main(void) {
             dir = +1;
         }
         on_ms = (uint16_t)((int)on_ms + dir);
+
+        // parpadeo RC3 de 2s con base 20ms
+        ticks++;
+        if (ticks==100){ //100*20ms=2s
+            LATC ^= (1 << PIN_RC3); 
+            ticks = 0;
+        }
     }
     return 0;
 }
+

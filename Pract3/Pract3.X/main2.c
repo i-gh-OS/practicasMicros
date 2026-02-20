@@ -19,7 +19,7 @@ int main(void){
     TRISA = 0x0000;
     TRISB = 0x0000;
     
-    uint16_t retardo_ms = 1000;
+    uint16_t retardo_ms = 1000; //2s de periodo
     
     while (1) {
         Retardo(retardo_ms);

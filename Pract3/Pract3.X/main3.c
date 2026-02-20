@@ -20,8 +20,8 @@ int main(void) {
     TRISA = 0x0000;
     TRISB = 0x0000;
 
-    //uint16_t retardo_ms = 20, retardo_ant = 21;
     uint16_t on_ms = 0;
+    int dir = 1;
 
     while (1) {
 
