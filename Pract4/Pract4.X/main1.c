@@ -20,8 +20,7 @@ void InterrupcionTimer2(void){
 
 int main(void){
     int pulsador;
-    asm("di"); //deshabilita interrupciones para evitar
-               //problemas con registros compartidos
+
     ANSELB &= ~(1<<PIN_PULSADOR);
     ANSELC &= ~(1 << LED_RC0) | (1 << LED_RC3);
     TRISB |= (1<<PIN_PULSADOR); //entrada (1)
@@ -46,8 +45,8 @@ int main(void){
     while(1){
         pulsador = (PORTB >> PIN_PULSADOR)&1;
         if(pulsador == 0){
-            LATC &= ~(1<<LED_RC0); //LED activado
-            //LATCCLR = (1<<LED_RC0);
+
+            LATCCLR = (1<<LED_RC0);
         }else{
             LATC |= 1<<LED_RC0; //LED desactivado
             //LATCSET = (1<<LED_RC0);

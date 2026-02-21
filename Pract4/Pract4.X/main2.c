@@ -25,8 +25,7 @@ void InterrupcionTimer3(void){
 
 int main(void){
     int pulsador;
-    asm("di"); //deshabilita interrupciones para evitar
-               //problemas con registros compartidos
+    
     ANSELB &= ~(1<<PIN_PULSADOR);
     ANSELC &= ~(1 << LED_RC0) | (1 << LED_RC3)| (1 << LED_RC2);
     TRISB |= (1<<PIN_PULSADOR); //entrada (1)
@@ -41,7 +40,7 @@ int main(void){
     IPC2bits.T2IP = 2;
     IPC2bits.T2IS = 0;
     IFS0bits.T2IF = 0;
-    INTCONbits.MVEC = 1; //pone CPU a multi-vector
+    
     IEC0bits.T2IE = 1; //habilita interrupcion individual
     T2CON = 0x8070; //empieza timer
     
@@ -56,6 +55,8 @@ int main(void){
     IEC0bits.T3IE = 1; //habilita interrupcion individual
     T3CON = 0x8060; //empieza timer, div. 6
     
+
+    INTCONbits.MVEC = 1; //pone CPU a multi-vector
     asm("ei"); //habilita interrupciones
     
     while(1){
