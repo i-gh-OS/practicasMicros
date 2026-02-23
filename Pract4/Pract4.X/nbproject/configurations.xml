@@ -23,6 +23,7 @@
       <itemPath>main2.c</itemPath>
       <itemPath>Pic32Ini.c</itemPath>
       <itemPath>main3.c</itemPath>
+      <itemPath>../../Pract3/Pract3.X/timer2.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
