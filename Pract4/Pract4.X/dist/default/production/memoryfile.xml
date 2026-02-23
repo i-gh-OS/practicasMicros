@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <project>                                  
-  <executable name="dist/default/debug/Pract4.X.debug.elf">                 
+  <executable name="dist/default/production/Pract4.X.production.elf">                 
     <memory name="program">                 
       <units>bytes</units>                 
       <length>66704</length>                 
@@ -9,9 +9,9 @@
     </memory>                              
     <memory name="data">              
       <units>bytes</units>                 
-      <length>16896</length>                 
-      <used>1028</used>                     
-      <free>15868</free>                     
+      <length>16384</length>                 
+      <used>4</used>                     
+      <free>16380</free>                     
     </memory>                              
   </executable>                            
 </project>                                 

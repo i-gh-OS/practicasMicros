@@ -7,6 +7,7 @@
 
 #include <xc.h>
 #include "Pic32Ini.h"
+#include <stdint.h>
 #define PIN_PULSADOR 5
 #define LED_RC0 0
 #define LED_RC3 3
@@ -14,13 +15,12 @@
 __attribute__((vector(_TIMER_2_VECTOR), interrupt(IPL2SOFT), nomips16))
 void InterrupcionTimer2(void){
     IFS0bits.T2IF = 0;
-    LATC ^= (1<<LED_RC3);
-    //LATCINV = (1<<LED_RC3);
+    LATCINV = (1<<LED_RC3);
 }
 
 int main(void){
     int pulsador;
-
+    
     ANSELB &= ~(1<<PIN_PULSADOR);
     ANSELC &= ~(1 << LED_RC0) | (1 << LED_RC3);
     TRISB |= (1<<PIN_PULSADOR); //entrada (1)
@@ -45,11 +45,9 @@ int main(void){
     while(1){
         pulsador = (PORTB >> PIN_PULSADOR)&1;
         if(pulsador == 0){
-
             LATCCLR = (1<<LED_RC0);
         }else{
-            LATC |= 1<<LED_RC0; //LED desactivado
-            //LATCSET = (1<<LED_RC0);
+            LATCSET = (1<<LED_RC0);
         }
     }
     return 0;
