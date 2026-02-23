@@ -6,5 +6,6 @@
 void InicializarTimer2(void);
 uint32_t getPulsac(void);
 uint32_t getSegundos(void);
+void cuentaSegundos(void);
 
 #endif	

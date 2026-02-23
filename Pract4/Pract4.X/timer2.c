@@ -30,13 +30,14 @@ void InterrupcionTimer2(void) {
     IFS0bits.T2IF = 0;
     // LATCINV = (1 << LED_RC0);
     pulsac=0;
-    if (tienes_contar){
-       segundos++;
-    }
 }
 
 uint32_t getPulsac(void){
     return pulsac;
+}
+
+void cuentaSegundos(void){
+    segundos++;
 }
 
 uint32_t getSegundos(void){
