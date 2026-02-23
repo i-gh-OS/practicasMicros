@@ -4,6 +4,7 @@
 #include <stdint.h>
   
 void InicializarTimer2(void);
-uint32_t getTicks(void);
+uint32_t getPulsac(void);
+uint32_t getSegundos(void);
 
 #endif	

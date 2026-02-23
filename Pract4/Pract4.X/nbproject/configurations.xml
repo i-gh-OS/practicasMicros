@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Pic32Ini.h</itemPath>
+      <itemPath>timer2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -23,11 +24,13 @@
       <itemPath>main2.c</itemPath>
       <itemPath>Pic32Ini.c</itemPath>
       <itemPath>main3.c</itemPath>
-      <itemPath>../../Pract3/Pract3.X/timer2.c</itemPath>
+      <itemPath>timer2.c</itemPath>
+      <itemPath>main4.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
     <Elem>../../Pract3/Pract3.X</Elem>
+    <Elem>.</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -1253,6 +1256,8 @@
         </C32CPP>
         <C32Global>
         </C32Global>
+      </item>
+      <item path="main3.c" ex="true" overriding="false">
       </item>
     </conf>
   </confs>

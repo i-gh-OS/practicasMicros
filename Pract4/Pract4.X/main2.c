@@ -1,6 +1,6 @@
 /* 
  * File:   main2.c
- * Author: irene
+ * Author: Irene y Guille
  *
  * Created on 20 de febrero de 2026, 10:22
  */
