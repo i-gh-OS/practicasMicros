@@ -5,11 +5,6 @@
 #define LED_RC1 1
 #define N_MAX 5
 
-static int pulsac = 0;
-static int tienes_contar=0;
-static int segundos=0;
-
-
 int main(void) {
     int puls_act, puls_ant;
 
@@ -28,24 +23,17 @@ int main(void) {
     while (1) {
         puls_act = (PORTB >> PIN_PULSADOR) & 1;
         if ((puls_ant != puls_act) && (puls_act == 0)) {
-            asm("di");
-            pulsac = getPulsac();
-            asm("NOP");
-            pulsac++;
-            if (pulsac >= N_MAX) {
+            incrPulsac();
+            if (getPulsac >= N_MAX) {
                 LATCCLR = 1 << LED_RC1; //enciende LED
-                cuentaSegundos();
+                iniContador4s();
+                if(getSegundos()==4){
+                    LATCSET = 1 << LED_RC1; //apago LED
+                    stopContador4s();
+                }
             }
-            asm("ei");  
         }
         puls_ant = puls_act;
-        segundos = getSegundos();
-        if (segundos >= 4) {
-            asm("di");
-            LATCSET = 1 << LED_RC1; //apago LED
-            segundos = 0;
-            asm("ei");
-        }
     }
     return 0;
 }
