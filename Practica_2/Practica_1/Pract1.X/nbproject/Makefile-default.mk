@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=manejoPulsador.c
+SOURCEFILES_QUOTED_IF_SPACED=diseno2.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/manejoPulsador.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/manejoPulsador.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/diseno2.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/diseno2.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/manejoPulsador.o
+OBJECTFILES=${OBJECTDIR}/diseno2.o
 
 # Source Files
-SOURCEFILES=manejoPulsador.c
+SOURCEFILES=diseno2.c
 
 
 
@@ -101,18 +101,18 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/manejoPulsador.o: manejoPulsador.c  .generated_files/flags/default/4f5ba79e0a10af6fea869d1838aacba35650342d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/diseno2.o: diseno2.c  .generated_files/flags/default/4c5c5c1e0cf2b3deb9241449b9fee9feedc8638b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/manejoPulsador.o.d 
-	@${RM} ${OBJECTDIR}/manejoPulsador.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/manejoPulsador.o.d" -o ${OBJECTDIR}/manejoPulsador.o manejoPulsador.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	@${RM} ${OBJECTDIR}/diseno2.o.d 
+	@${RM} ${OBJECTDIR}/diseno2.o 
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/diseno2.o.d" -o ${OBJECTDIR}/diseno2.o diseno2.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
 else
-${OBJECTDIR}/manejoPulsador.o: manejoPulsador.c  .generated_files/flags/default/cd55326ee30140ca5eda9c807cb233582fb166e4 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/diseno2.o: diseno2.c  .generated_files/flags/default/daaf7084bb234f38e32148a8cddf9a7d6e47d8 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/manejoPulsador.o.d 
-	@${RM} ${OBJECTDIR}/manejoPulsador.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/manejoPulsador.o.d" -o ${OBJECTDIR}/manejoPulsador.o manejoPulsador.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	@${RM} ${OBJECTDIR}/diseno2.o.d 
+	@${RM} ${OBJECTDIR}/diseno2.o 
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/diseno2.o.d" -o ${OBJECTDIR}/diseno2.o diseno2.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
 endif
 

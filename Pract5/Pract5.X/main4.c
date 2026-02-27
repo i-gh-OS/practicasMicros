@@ -9,16 +9,14 @@
 #include <stdint.h>
 
 #define PIN_UART1 13
-#define PIN_PULSADOR
+#define PIN_PULSADOR 5
 
 int main(void){
-    char c[];
-    uint32_t bits4; 
+    char c;
     
     ANSELB &= ~(1<<PIN_UART1);
     TRISB |= 1<<PIN_UART1;
     
-    int puls=0, puls_ant;
     
     ANSELB &= ~(1<<PIN_PULSADOR);
     TRISB |= 1<<PIN_PULSADOR;
@@ -38,19 +36,18 @@ int main(void){
     U1STAbits.URXEN=1;
     
     while(1){
+        int a=0;
         if (U1STAbits.URXDA != 0) {
             c = U1RXREG;
+            a=1;
             //bits4 = (uint32_t) c & 0x000F;
             //LATC = (LATC & ~0x000F) | bits4;
         }
-        puls_ant=puls;
-        puls = (PORTB >> PIN_PULSADOR) & 0x1;
-        if (puls<puls_ant){
+        if(a){
+            a=0;
             U1STAbits.UTXEN=1;
-            for (int icad=0; c[icad]!='\0'; icad++){
-                while(U1STAbits.TRMT==1);
-                U1TXREG=c[icad];
-            }
+            U1TXREG=c;
+            while(U1STAbits.TRMT==0);
             U1STAbits.UTXEN=0;
         }
     }

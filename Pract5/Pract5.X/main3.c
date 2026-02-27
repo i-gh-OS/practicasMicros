@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 #define PIN_UART1 13
-#define PIN_PULSADOR
+#define PIN_PULSADOR 5
 
 int main(void){
     char c;
@@ -49,8 +49,8 @@ int main(void){
         if (puls<puls_ant){
             U1STAbits.UTXEN=1;
             for (int icad=0; cad[icad]!='\0'; icad++){
-                while(U1STAbits.TRMT==1);
                 U1TXREG=cad[icad];
+                while(U1STAbits.TRMT==0);
             }
             U1STAbits.UTXEN=0;
         }

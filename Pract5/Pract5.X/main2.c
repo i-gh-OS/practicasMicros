@@ -7,10 +7,10 @@
 
 #include <xc.h>
 #include <stdint.h>
-#define PIN_PULSADOR
+#define PIN_PULSADOR 5
 
 int main(void){
-    char cad[] = "Hola mundo";
+    char cad[] = "Hola mundo\n";
     int puls=0, puls_ant;
     
     ANSELB &= ~(1<<PIN_PULSADOR);
@@ -30,8 +30,8 @@ int main(void){
         if (puls<puls_ant){
             U1STAbits.UTXEN=1;
             for (int icad=0; cad[icad]!='\0'; icad++){
-                while(U1STAbits.TRMT==1);
                 U1TXREG=cad[icad];
+                while(U1STAbits.TRMT==0);
             }
             U1STAbits.UTXEN=0;
         }
