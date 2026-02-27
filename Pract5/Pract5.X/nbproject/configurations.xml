@@ -23,6 +23,7 @@
       <itemPath>../../Pract4/Pract4.X/Pic32Ini.c</itemPath>
       <itemPath>main1.c</itemPath>
       <itemPath>uart1.c</itemPath>
+      <itemPath>main2.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
