@@ -6,18 +6,18 @@
  */
 
 #include <xc.h>
+#include <stdint.h>
 #include "Pic32Ini.h"
 #include "UART1colas.h"
 
-#define baudios 9600
-
-char getcUART(void);
-void putsUART(char s[]);
-void InicializarUART1(int baudios);
+static int baudios=9600;
 
 int main(void) {
     iniUART1(baudios);
-    //prueba
+    //prueba    
+    asm("ei");
+    INTCON.MVEC =1;
+
     while (1) {
         char c = getcUART();
         if (c != '\0') {

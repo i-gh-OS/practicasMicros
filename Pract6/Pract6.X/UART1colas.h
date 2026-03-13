@@ -3,9 +3,9 @@
 #define UART1colas_H
 #include <stdint.h>
 
-void iniUART1(void)
-char getcUART(void)
-void putsUART(char s[])
+void iniUART1(int baudios);
+char getcUART(void);
+void putsUART(char s[]);
 
 #endif 
 
