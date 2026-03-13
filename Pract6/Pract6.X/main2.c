@@ -26,13 +26,13 @@ int toInt(char c) {
     c = toupper(c);
 
     if (c >= '0' && c <= '9') {
-        return c - '0';
+        return c - '0'; //devuelve int
     }
     if (c >= 'A' && c <= 'F') {
         return c - 'A' + 10;
     }
 
-    return 0;
+    return -1; //error
 }
 
 void ProcesaOrden(char orden[]){
@@ -63,15 +63,15 @@ void ProcesaOrden(char orden[]){
         return;
     }
 
-    if (pin < 0 || pin > 15) {
+    if (pin < 0 || pin > 15) { //comprueba si pin conv es valido
         putsUART("Error\n");
         return;
     }
 
     if (puerto == 'B') {
-        valor = (PORTB >> pin) & 1;
+        valor = (PORTB >> pin) &1;
     } else {
-        valor = (PORTC >> pin) & 1;
+        valor = (PORTC >> pin) &1;
     }
 
     putsUART(respuesta);
