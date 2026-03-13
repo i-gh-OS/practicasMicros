@@ -1,3 +1,4 @@
+
 #include <xc.h>
 #include <stdint.h>
 #include "timer2.h"
@@ -24,16 +25,18 @@ int main(void) {
         puls_act = (PORTB >> PIN_PULSADOR) & 1;
         if ((puls_ant != puls_act) && (puls_act == 0)) {
             incrPulsac();
-            if (getPulsac >= N_MAX) {
+            if (getPulsac() >= N_MAX) {
                 LATCCLR = 1 << LED_RC1; //enciende LED
                 iniContador4s();
-                if(getSegundos()==4){
-                    LATCSET = 1 << LED_RC1; //apago LED
-                    stopContador4s();
-                }
             }
+        }                
+        if(getSegundos()==4){
+            LATCSET = 1 << LED_RC1; //apago LED
+            stopContador4s();
         }
         puls_ant = puls_act;
     }
     return 0;
 }
+
+
