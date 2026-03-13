@@ -1,43 +1,28 @@
 /* 
- * File:   newmain.c
+ * File:   main1.c
  * Author: irene y guille
  *
- * Created on February 24, 2026, 7:53 PM
+ * Created on 13 de marzo de 2026, 12:32
  */
 
 #include <xc.h>
-#include <stdint.h>
+#include "Pic32Ini.h"
+#include "UART1colas.h"
 
-#define PIN_UART1 13
+#define baudios 9600
 
-int main(void){
-    char c;
-    uint32_t bits4; 
-    
-    ANSELB &= ~(1<<PIN_UART1);
-    TRISB |= 1<<PIN_UART1;
-    
-    ANSELC = 0;
-    TRISC = 0;
-    LATC = 0xFFFF;
-    
-    SYSKEY = 0XAA996655;
-    SYSKEY = 0X556699AA;
-    U1RXR = 3;
-    SYSKEY = 0X1CA11CA1; //vuelvo a bloquear
-    
-    U1BRG = 32; //9600 baudios
-    U1MODE = 0x8000; //ON, control de flujo estandar, v estandar, 8N1
-    U1STAbits.URXEN=1;
-    
-    while(1){
-        while(U1STAbits.URXDA==0);
-        c = U1RXREG;
-        bits4 = (uint32_t)c & 0x000F;
-        LATC = (LATC & ~0x000F) | bits4; //tenemos que limpiar antes de hacer el OR
-                                         // lo hacemos en una sola instrucc para que no
-                                         // se enciendan los bits (aunque en teoria se encienden?)
+char getcUART(void);
+void putsUART(char s[]);
+void InicializarUART1(int baudios);
+
+int main(void) {
+    iniUART1(baudios);
+    //prueba
+    while (1) {
+        char c = getcUART();
+        if (c != '\0') {
+            putsUART(c);
+        }
     }
     return 0;
 }
-

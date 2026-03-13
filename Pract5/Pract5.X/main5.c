@@ -1,18 +1,33 @@
 /* 
  * File:   main5.c
- * Author: irene
+ * Author: irene y guille
  *
- * Created on 13 de marzo de 2026, 14:14
+ * Created on 13 de marzo de 2026, 12:14
  */
-
-#include <stdio.h>
-#include <stdlib.h>
 
 /*
- * 
+ * programa para controlar los pines de los puertos B y C
+ * de la tarjeta desde el PC o el móvil
  */
-int main(int argc, char** argv) {
 
-    return (EXIT_SUCCESS);
+#include <xc.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include "UART1colas.h"
+
+
+int main(void) {
+
+    return 0;
 }
+
+int toInt(char c){
+    
+}
+
+void ProcesaOrden(orden){
+    
+}
+
 
