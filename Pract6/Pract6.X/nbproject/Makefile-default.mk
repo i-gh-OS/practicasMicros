@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=UART1colas.c main1.c
+SOURCEFILES_QUOTED_IF_SPACED=UART1colas.c main2.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/UART1colas.o ${OBJECTDIR}/main1.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/UART1colas.o.d ${OBJECTDIR}/main1.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/UART1colas.o ${OBJECTDIR}/main2.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/UART1colas.o.d ${OBJECTDIR}/main2.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/UART1colas.o ${OBJECTDIR}/main1.o
+OBJECTFILES=${OBJECTDIR}/UART1colas.o ${OBJECTDIR}/main2.o
 
 # Source Files
-SOURCEFILES=UART1colas.c main1.c
+SOURCEFILES=UART1colas.c main2.c
 
 
 
@@ -101,30 +101,30 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/UART1colas.o: UART1colas.c  .generated_files/flags/default/c427c497e1ec3bec160c274c8dc2864362ffd8cd .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/UART1colas.o: UART1colas.c  .generated_files/flags/default/8ba3bf00dfed9363ab46fd2b0d3cc1ab39250403 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/UART1colas.o.d 
 	@${RM} ${OBJECTDIR}/UART1colas.o 
 	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/UART1colas.o.d" -o ${OBJECTDIR}/UART1colas.o UART1colas.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/main1.o: main1.c  .generated_files/flags/default/6dd8ceb75e4cb9acf03246d7133b0fdd2eaa8cb6 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/main2.o: main2.c  .generated_files/flags/default/5749221344e8904c077f96103e57549521cef6a8 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main1.o.d 
-	@${RM} ${OBJECTDIR}/main1.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/main1.o.d" -o ${OBJECTDIR}/main1.o main1.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	@${RM} ${OBJECTDIR}/main2.o.d 
+	@${RM} ${OBJECTDIR}/main2.o 
+	${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/main2.o.d" -o ${OBJECTDIR}/main2.o main2.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
 else
-${OBJECTDIR}/UART1colas.o: UART1colas.c  .generated_files/flags/default/306269320d067f0474ccc29efe9e80c0843bc66e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/UART1colas.o: UART1colas.c  .generated_files/flags/default/2082f33259b616370b26c2aa6f31a4f4a261754f .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/UART1colas.o.d 
 	@${RM} ${OBJECTDIR}/UART1colas.o 
 	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/UART1colas.o.d" -o ${OBJECTDIR}/UART1colas.o UART1colas.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
-${OBJECTDIR}/main1.o: main1.c  .generated_files/flags/default/d79387a2742199ae9e917b5e294fe677417ae2af .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/main2.o: main2.c  .generated_files/flags/default/e5a2b7e7b2e3e1ad8b3503c55c9cd56fb4e1c09 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main1.o.d 
-	@${RM} ${OBJECTDIR}/main1.o 
-	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/main1.o.d" -o ${OBJECTDIR}/main1.o main1.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
+	@${RM} ${OBJECTDIR}/main2.o.d 
+	@${RM} ${OBJECTDIR}/main2.o 
+	${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -fdata-sections -O1 -fno-common -Werror -Wall -MP -MMD -MF "${OBJECTDIR}/main2.o.d" -o ${OBJECTDIR}/main2.o main2.c    -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}"  
 	
 endif
 

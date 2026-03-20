@@ -1240,7 +1240,7 @@
                   value=""/>
         <property key="warningmessagebreakoptions.warningmessages" value="holdstate"/>
       </Tool>
-      <item path="main1.c" ex="false" overriding="false">
+      <item path="main1.c" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
@@ -1256,7 +1256,21 @@
         <C32Global>
         </C32Global>
       </item>
-      <item path="main2.c" ex="true" overriding="false">
+      <item path="main2.c" ex="false" overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-CO>
+        </C32-CO>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
       </item>
     </conf>
   </confs>
