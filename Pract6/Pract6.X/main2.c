@@ -5,51 +5,71 @@
  * Created on 13 de marzo de 2026, 12:14
  */
 
-/*
- * programa para controlar los pines de los puertos B y C
- * de la tarjeta desde el PC o el movil
- */
-
 #include <xc.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include "UART1colas.h"
 
-#define baudios 9600
+#define BAUDIOS 9600
+#define TAM_ORDEN 20
+
+int toInt(char c);
+void ProcesaOrden(char orden[]);
 
 int main(void) {
+    char c;
+    char orden[TAM_ORDEN];
+    int i = 0;
+
     ANSELB = 0;
     ANSELC = 0;
-    TRISC = 0;
-    TRISB = 0;
-    INTCONbits.MVEC =1;
+
+    INTCONbits.MVEC = 1;
+    iniUART1(BAUDIOS);
     asm("ei");
-    
-    iniUART1(baudios);
+
+    while (1) {
+        c = getcUART();
+        if (c != '\0') {
+            if (c == '\n') {
+                orden[i] = '\0'; //cerrar string
+                ProcesaOrden(orden);
+                i = 0; //preparar siguiente orden
+            } else {
+                if (i < TAM_ORDEN - 1) {
+                    orden[i] = c;
+                    i++;
+                } else {
+                    // buffer lleno -> error y reinicio
+                    putsUART("Error\n");
+                    i = 0;
+                }
+            }
+        }
+    }
     return 0;
 }
 
 int toInt(char c) {
     c = toupper(c);
-
     if (c >= '0' && c <= '9') {
-        return c - '0'; //devuelve int
+        return c - '0';
     }
     if (c >= 'A' && c <= 'F') {
         return c - 'A' + 10;
     }
-
-    return -1; //error
+    return -1;
 }
-    static int valor = 0;
-void ProcesaOrden(char orden[]){
+
+void ProcesaOrden(char orden[]) {
     char respuesta[20];
+    char tipo;
     char puerto;
     int pin;
-    int direccion;
+    int valor;
 
-
+    //pasar a mayusculas
     orden[0] = toupper(orden[0]);
     orden[1] = toupper(orden[1]);
     orden[3] = toupper(orden[3]);
@@ -58,109 +78,105 @@ void ProcesaOrden(char orden[]){
         putsUART("Instruccion Desconocida\n");
         return;
     }
-    if (orden[2] == ',' || orden[4] == ',' || orden[6] == ',' || orden[8] == '\n') {
-        putsUART("Error\n");
-        return;
-        if (orden[1] != 'D' || orden[1] != 'O') {
-            putsUART("Instruccion desconocida\n");
-            return;
-        }
-        
-        puerto = orden[3];
-        pin = toInt(orden[5]);
-        direccion = orden[7];
-                
-        if (puerto != 'B' && puerto != 'C') {
-            putsUART("Puerto no soportado\n");
-            return;
-        }        
-        
-        if (pin < 0 || pin > 15) { //comprueba si pin es valido
+
+    tipo = orden[1];
+
+    //PD y PO
+    if (tipo == 'D' || tipo == 'O') {
+        // Formato: PX,<puerto>,<pin>,<valor>
+        if (orden[2] != ',' || orden[4] != ',' || orden[6] != ',' || orden[8] != '\0') {
             putsUART("Error\n");
             return;
         }
-        
-        if (orden[1] == 'O') {
-            if (puerto == 'B'){
-                if (direccion == 1){
-                    LATBSET = 1 << pin;
-                    return;
-                }
-                if (direccion == 0) {
-                    LATBCLR = 1 << pin;
-                    return;
-                } else {
-                    putsUART("Error\n");
-                    return;
-                }
-            } else {
-                if (direccion == 1) {
-                    LATCSET = 1 << pin;
-                    return;
-                }
-                if (direccion == 0) {
-                    LATCCLR = 1 << pin;
-                    return;
-                } else {
-                    putsUART("Error\n");
-                    return;
-                }
-            }
-        }
 
-        if (orden[1] == 'D') {
-            if (puerto == 'B') {
-                if (direccion == 1){
-                    TRISB |= 1 << pin;
-                    return;
-                }
-                if (direccion == 0) {
-                    TRISB &= ~(1 << pin);
-                    return;
-                } else {
-                    putsUART("Error\n");
-                    return;
-                }
-            } else {
-                if (direccion == 1) {
-                    TRISC |= 1 << pin;
-                    return;
-                }
-                if (direccion == 0) {
-                    TRISC &= ~(1 << pin);
-                    return;
-                } else {
-                    putsUART("Error\n");
-                    return;
-                }
-            }
-        }
-    }
-    if (orden[2] == ',' || orden[4] == ',' || orden[6] == '\n') {
         puerto = orden[3];
         pin = toInt(orden[5]);
+        valor = orden[7] - '0';
+
         if (puerto != 'B' && puerto != 'C') {
             putsUART("Puerto no soportado\n");
             return;
         }
 
-        if (pin < 0 || pin > 15) { //comprueba si pin conv es valido
+        if (pin < 0 || pin > 15) {
+            putsUART("Error\n");
+            return;
+        }
+
+        if (valor != 0 && valor != 1) {
+            putsUART("Error\n");
+            return;
+        }
+
+        if (tipo == 'D') {
+            if (puerto == 'B') {
+                if (valor == 1) {
+                    TRISB |= (1 << pin);
+                } else {
+                    TRISB &= ~(1 << pin);
+                }
+            } else {
+                if (valor == 1) {
+                    TRISC |= (1 << pin);
+                } else {
+                    TRISC &= ~(1 << pin);
+                }
+            }
+
+            putsUART("OK\n");
+            return;
+        }
+
+        if (tipo == 'O') {
+            if (puerto == 'B') {
+                if (valor == 1) {
+                    LATBSET = (1 << pin);
+                } else {
+                    LATBCLR = (1 << pin);
+                }
+            } else {
+                if (valor == 1) {
+                    LATCSET = (1 << pin);
+                } else {
+                    LATCCLR = (1 << pin);
+                }
+            }
+
+            putsUART("OK\n");
+            return;
+        }
+    }
+
+    //PI
+    if (tipo == 'I') {
+        // Formato: PI,<puerto>,<pin>
+        if (orden[2] != ',' || orden[4] != ',' || orden[6] != '\0') {
+            putsUART("Error\n");
+            return;
+        }
+
+        puerto = orden[3];
+        pin = toInt(orden[5]);
+
+        if (puerto != 'B' && puerto != 'C') {
+            putsUART("Puerto no soportado\n");
+            return;
+        }
+
+        if (pin < 0 || pin > 15) {
             putsUART("Error\n");
             return;
         }
 
         if (puerto == 'B') {
-            valor = (PORTB >> pin) &1;
-            return;
+            valor = (PORTB >> pin) & 1;
         } else {
-            valor = (PORTC >> pin) &1;
-            return;
+            valor = (PORTC >> pin) & 1;
         }
-    }
-    else {
-        putsUART("Instruccion desconocida\n");
+
+        sprintf(respuesta, "PI,%d\n", valor);
+        putsUART(respuesta);
         return;
     }
-
-    putsUART(respuesta);
+    putsUART("Instruccion Desconocida\n");
 }

@@ -34,9 +34,7 @@ int main(void){
         while(U1STAbits.URXDA==0);
         c = U1RXREG;
         bits4 = (uint32_t)c & 0x000F;
-        LATC = (LATC & ~0x000F) | bits4; //tenemos que limpiar antes de hacer el OR
-                                         // lo hacemos en una sola instrucc para que no
-                                         // se enciendan los bits (aunque en teoria se encienden?)
+        LATC = (LATC & ~0x000F) | bits4; 
     }
     return 0;
 }
