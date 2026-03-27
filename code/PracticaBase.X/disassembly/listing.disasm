@@ -1,0 +1,733 @@
+Disassembly Listing for Practica7
+Generated From:
+/home/daniel/Asignaturas/Microprocesadores 3 GITT/Laboratorio/Practica7/code/Practica7.X/dist/default/debug/Practica7.X.debug.elf
+08-mar-2018 9:30:50
+
+---  /home/daniel/Asignaturas/Microprocesadores 3 GITT/Laboratorio/Practica7/code/Practica7.X/main2.c  --
+1:                   #include <xc.h>
+2:                   #include <stdio.h>
+3:                   #include "UART1.h"
+4:                   
+5:                   #define PIN_PULSADOR  5
+6:                   
+7:                   int main(void)
+8:                   {
+9D0005C0  27BDFFD0   ADDIU SP, SP, -48
+9D0005C4  AFBF002C   SW RA, 44(SP)
+9D0005C8  AFBE0028   SW S8, 40(SP)
+9D0005CC  03A0F021   ADDU S8, SP, ZERO
+9:                     char cad[]="HolaDaniel\n";//AT+NAMEHC-06-6";
+9D0005D0  3C029D00   LUI V0, -25344
+9D0005D4  8C4409C8   LW A0, 2504(V0)
+9D0005D8  244309C8   ADDIU V1, V0, 2504
+9D0005DC  8C630004   LW V1, 4(V1)
+9D0005E0  244209C8   ADDIU V0, V0, 2504
+9D0005E4  8C420008   LW V0, 8(V0)
+9D0005E8  AFC40018   SW A0, 24(S8)
+9D0005EC  AFC3001C   SW V1, 28(S8)
+9D0005F0  AFC20020   SW V0, 32(S8)
+10:                    int puls_act, puls_ant;
+11:                  
+12:                    // Configuración del pulsador y los LEDs
+13:                    ANSELC &= ~0xF;                // Pines de los LEDs como digitales
+9D0005F4  3C02BF88   LUI V0, -16504
+9D0005F8  8C426200   LW V0, 25088(V0)
+9D0005FC  2404FFF0   ADDIU A0, ZERO, -16
+9D000600  00441824   AND V1, V0, A0
+9D000604  3C02BF88   LUI V0, -16504
+9D000608  AC436200   SW V1, 25088(V0)
+14:                    ANSELB &= (1<<PIN_PULSADOR);   // Pin del pulsador también como digital
+9D00060C  3C02BF88   LUI V0, -16504
+9D000610  8C426100   LW V0, 24832(V0)
+9D000614  30430020   ANDI V1, V0, 32
+9D000618  3C02BF88   LUI V0, -16504
+9D00061C  AC436100   SW V1, 24832(V0)
+15:                    
+16:                    LATA = 0;   // En el arranque dejamos todas las salidas no usadas a 0
+9D000620  3C02BF88   LUI V0, -16504
+9D000624  AC406030   SW ZERO, 24624(V0)
+17:                    LATB = 0; 
+9D000628  3C02BF88   LUI V0, -16504
+9D00062C  AC406130   SW ZERO, 24880(V0)
+18:                    LATC = 0xF; // Apago los LEDs de la placa
+9D000630  3C02BF88   LUI V0, -16504
+9D000634  2403000F   ADDIU V1, ZERO, 15
+9D000638  AC436230   SW V1, 25136(V0)
+19:                    
+20:                    // Pines como salidas
+21:                    TRISA = 0;
+9D00063C  3C02BF88   LUI V0, -16504
+9D000640  AC406010   SW ZERO, 24592(V0)
+22:                    TRISB = 1 << PIN_PULSADOR;
+9D000644  3C02BF88   LUI V0, -16504
+9D000648  24030020   ADDIU V1, ZERO, 32
+9D00064C  AC436110   SW V1, 24848(V0)
+23:                    TRISC = 0;
+9D000650  3C02BF88   LUI V0, -16504
+9D000654  AC406210   SW ZERO, 25104(V0)
+24:                  
+25:                    InicializarUART1(9600);
+9D000658  0F400000   JAL InicializarUART1
+9D00065C  24042580   ADDIU A0, ZERO, 9600
+26:                  
+27:                    // Habilito las interrupciones
+28:                    INTCONbits.MVEC = 1;
+9D000660  3C03BF88   LUI V1, -16504
+9D000664  8C621000   LW V0, 4096(V1)
+9D000668  24040001   ADDIU A0, ZERO, 1
+9D00066C  7C826304   INS V0, A0, 12, 1
+9D000670  AC621000   SW V0, 4096(V1)
+29:                    asm(" ei");
+9D000674  41606020   EI ZERO
+30:                    
+31:                    puls_ant = (PORTB>>PIN_PULSADOR) & 1;
+9D000678  3C02BF88   LUI V0, -16504
+9D00067C  8C426120   LW V0, 24864(V0)
+9D000680  00021142   SRL V0, V0, 5
+9D000684  30420001   ANDI V0, V0, 1
+9D000688  AFC20010   SW V0, 16(S8)
+32:                    
+33:                    while(1){
+34:                    	// Se lee el estado del pulsador
+35:                      puls_act = (PORTB>>PIN_PULSADOR) & 1;
+9D00068C  3C02BF88   LUI V0, -16504
+9D000690  8C426120   LW V0, 24864(V0)
+9D000694  00021142   SRL V0, V0, 5
+9D000698  30420001   ANDI V0, V0, 1
+9D00069C  AFC20014   SW V0, 20(S8)
+36:                      // Si el pulsador está pulsado, se envía la cadena
+37:                      if( (puls_ant != puls_act) && (puls_act == 0) ){
+9D0006A0  8FC30010   LW V1, 16(S8)
+9D0006A4  8FC20014   LW V0, 20(S8)
+9D0006A8  10620007   BEQ V1, V0, 0x9D0006C8
+9D0006AC  00000000   NOP
+9D0006B0  8FC20014   LW V0, 20(S8)
+9D0006B4  14400004   BNE V0, ZERO, 0x9D0006C8
+9D0006B8  00000000   NOP
+38:                        putsUART(cad);
+9D0006BC  27C20018   ADDIU V0, S8, 24
+9D0006C0  0F40012F   JAL putsUART
+9D0006C4  00402021   ADDU A0, V0, ZERO
+39:                      }
+40:                      puls_ant = puls_act;
+9D0006C8  8FC20014   LW V0, 20(S8)
+9D0006CC  AFC20010   SW V0, 16(S8)
+41:                    }
+9D0006D0  0B4001A3   J 0x9D00068C
+9D0006D4  00000000   NOP
+42:                  }
+---  /home/daniel/Asignaturas/Microprocesadores 3 GITT/Laboratorio/Practica7/code/Practica7.X/UART1.c  --
+1:                   #include <xc.h>
+2:                   #include <proc/p32mx270f256d.h>
+3:                   #include "Pic32Ini.h" // Aquí se define PBCLK
+4:                   
+5:                   #define PIN_U1RX     13 // U1RX se conecta a RB13
+6:                   #define PIN_U1TX      7 // U1TX se conecta a RB7
+7:                   
+8:                   // Cola de recepción
+9:                   #define TAM_COLA 100
+10:                  static char cola[TAM_COLA];
+11:                  static int icabeza=0; //índice para añadir
+12:                  static int icola=0;   //índice para leer
+13:                  
+14:                  typedef struct{
+15:                    int icabeza;
+16:                    int icola;
+17:                    char cola[TAM_COLA];
+18:                  }cola_t;
+19:                  
+20:                  static cola_t cola_envio;
+21:                  
+22:                  void InicializarUART1(int baudios)
+23:                  {
+9D000000  27BDFFF8   ADDIU SP, SP, -8
+9D000004  AFBE0004   SW S8, 4(SP)
+9D000008  03A0F021   ADDU S8, SP, ZERO
+9D00000C  AFC40008   SW A0, 8(S8)
+24:                    // TO-DO: Seleccionar 16 o 4 en función de baudios
+25:                    
+26:                    U1BRG = PBCLK/16/baudios - 1;
+9D000010  3C020004   LUI V0, 4
+9D000014  3443C4B4   ORI V1, V0, -15180
+9D000018  8FC20008   LW V0, 8(S8)
+9D00001C  0062001A   DIV V1, V0
+9D000020  004001F4   TEQ V0, ZERO
+9D000024  00001010   MFHI V0
+9D000028  00001012   MFLO V0
+9D00002C  2442FFFF   ADDIU V0, V0, -1
+9D000030  00401821   ADDU V1, V0, ZERO
+9D000034  3C02BF80   LUI V0, -16512
+9D000038  AC436040   SW V1, 24640(V0)
+27:                    
+28:                    // Activamos las interrupciones del receptor.
+29:                    IFS1bits.U1RXIF = 0; // Borro flag por si acaso
+9D00003C  3C03BF88   LUI V1, -16504
+9D000040  8C621040   LW V0, 4160(V1)
+9D000044  7C024204   INS V0, ZERO, 8, 1
+9D000048  AC621040   SW V0, 4160(V1)
+30:                    IEC1bits.U1RXIE = 1; // Habilito interrupciones
+9D00004C  3C03BF88   LUI V1, -16504
+9D000050  8C621070   LW V0, 4208(V1)
+9D000054  24040001   ADDIU A0, ZERO, 1
+9D000058  7C824204   INS V0, A0, 8, 1
+9D00005C  AC621070   SW V0, 4208(V1)
+31:                    IFS1bits.U1TXIF = 0; // Borro flag por si acaso
+9D000060  3C03BF88   LUI V1, -16504
+9D000064  8C621040   LW V0, 4160(V1)
+9D000068  7C024A44   INS V0, ZERO, 9, 1
+9D00006C  AC621040   SW V0, 4160(V1)
+32:                    IEC1bits.U1TXIE = 1; // Habilito interrupciones
+9D000070  3C03BF88   LUI V1, -16504
+9D000074  8C621070   LW V0, 4208(V1)
+9D000078  24040001   ADDIU A0, ZERO, 1
+9D00007C  7C824A44   INS V0, A0, 9, 1
+9D000080  AC621070   SW V0, 4208(V1)
+33:                    IPC8bits.U1IP   = 3; // Prioridad 3
+9D000084  3C03BF88   LUI V1, -16504
+9D000088  8C621110   LW V0, 4368(V1)
+9D00008C  24040003   ADDIU A0, ZERO, 3
+9D000090  7C822084   INS V0, A0, 2, 3
+9D000094  AC621110   SW V0, 4368(V1)
+34:                    IPC8bits.U1IS   = 1; // Subprioridad 1
+9D000098  3C03BF88   LUI V1, -16504
+9D00009C  8C621110   LW V0, 4368(V1)
+9D0000A0  24040001   ADDIU A0, ZERO, 1
+9D0000A4  7C820804   INS V0, A0, 0, 2
+9D0000A8  AC621110   SW V0, 4368(V1)
+35:                    
+36:                    
+37:                    // Conectamos U1RX y U1TX a los pines RB13 y RB7 del micro
+38:                    ANSELB &= ~((1<<PIN_U1RX)|(1<<PIN_U1TX)); // Primero los configuramos como digitales
+9D0000AC  3C02BF88   LUI V0, -16504
+9D0000B0  8C436100   LW V1, 24832(V0)
+9D0000B4  2402DF7F   ADDIU V0, ZERO, -8321
+9D0000B8  00621824   AND V1, V1, V0
+9D0000BC  3C02BF88   LUI V0, -16504
+9D0000C0  AC436100   SW V1, 24832(V0)
+39:                    TRISB  |= 1<<PIN_U1RX;    // Y RB13 como entrada, aunque el manual no dice nada de esto ??
+9D0000C4  3C02BF88   LUI V0, -16504
+9D0000C8  8C426110   LW V0, 24848(V0)
+9D0000CC  34432000   ORI V1, V0, 8192
+9D0000D0  3C02BF88   LUI V0, -16504
+9D0000D4  AC436110   SW V1, 24848(V0)
+40:                    LATB |= 1<<PIN_U1TX; // Para que se quede a 1 mientras el transmisor esté inhabilitado.
+9D0000D8  3C02BF88   LUI V0, -16504
+9D0000DC  8C426130   LW V0, 24880(V0)
+9D0000E0  34430080   ORI V1, V0, 128
+9D0000E4  3C02BF88   LUI V0, -16504
+9D0000E8  AC436130   SW V1, 24880(V0)
+41:                    
+42:                    SYSKEY=0xAA996655; // Se desbloquean los registros
+9D0000EC  3C02BF81   LUI V0, -16511
+9D0000F0  3C03AA99   LUI V1, -21863
+9D0000F4  34636655   ORI V1, V1, 26197
+9D0000F8  AC43F230   SW V1, -3536(V0)
+43:                    SYSKEY=0x556699AA; // de configuración.
+9D0000FC  3C02BF81   LUI V0, -16511
+9D000100  3C035566   LUI V1, 21862
+9D000104  346399AA   ORI V1, V1, -26198
+9D000108  AC43F230   SW V1, -3536(V0)
+44:                    U1RXR = 3;         // U1RX conectado a RB13. Ojo: si se cambia el define esto se cambia a mano
+9D00010C  3C02BF81   LUI V0, -16511
+9D000110  24030003   ADDIU V1, ZERO, 3
+9D000114  AC43FA50   SW V1, -1456(V0)
+45:                    RPB7R = 1;         // U1TX conectado a RB7.
+9D000118  3C02BF81   LUI V0, -16511
+9D00011C  24030001   ADDIU V1, ZERO, 1
+9D000120  AC43FB48   SW V1, -1208(V0)
+46:                    SYSKEY=0x1CA11CA1; // Se vuelven a bloquear.
+9D000124  3C02BF81   LUI V0, -16511
+9D000128  3C031CA1   LUI V1, 7329
+9D00012C  34631CA1   ORI V1, V1, 7329
+9D000130  AC43F230   SW V1, -3536(V0)
+47:                    
+48:                    U1STAbits.URXEN = 1; // Se habilita el receptor. El transmisor sólo cuando tengamos que emitir
+9D000134  3C03BF80   LUI V1, -16512
+9D000138  8C626010   LW V0, 24592(V1)
+9D00013C  24040001   ADDIU A0, ZERO, 1
+9D000140  7C826304   INS V0, A0, 12, 1
+9D000144  AC626010   SW V0, 24592(V1)
+49:                    U1MODE = 0x8000;     // Se arranca la UART
+9D000148  3C02BF80   LUI V0, -16512
+9D00014C  34038000   ORI V1, ZERO, -32768
+9D000150  AC436000   SW V1, 24576(V0)
+50:                  
+51:                    // Se inicializan las colas
+52:                    cola_envio.icabeza = 0;
+9D000154  3C02A000   LUI V0, -24576
+9D000158  AC40026C   SW ZERO, 620(V0)
+53:                    cola_envio.icola = 0;
+9D00015C  3C02A000   LUI V0, -24576
+9D000160  2442026C   ADDIU V0, V0, 620
+9D000164  AC400004   SW ZERO, 4(V0)
+54:                  }
+9D000168  03C0E821   ADDU SP, S8, ZERO
+9D00016C  8FBE0004   LW S8, 4(SP)
+9D000170  27BD0008   ADDIU SP, SP, 8
+9D000174  03E00008   JR RA
+9D000178  00000000   NOP
+55:                  
+56:                  __attribute__((vector(32), interrupt(IPL3SOFT),
+57:                                 nomips16))
+58:                  void InterrupcionUART1(void)
+59:                  {
+9D00017C  415DE800   RDPGPR SP, SP
+9D000180  401A7000   MFC0 K0, EPC
+9D000184  401B6000   MFC0 K1, Status
+9D000188  27BDFFE0   ADDIU SP, SP, -32
+9D00018C  AFBA001C   SW K0, 28(SP)
+9D000190  401A6002   MFC0 K0, SRSCtl
+9D000194  AFBB0018   SW K1, 24(SP)
+9D000198  AFBA0014   SW K0, 20(SP)
+9D00019C  7C1B7844   INS K1, ZERO, 1, 15
+9D0001A0  377B0C00   ORI K1, K1, 3072
+9D0001A4  409B6000   MTC0 K1, Status
+9D0001A8  AFBE000C   SW S8, 12(SP)
+9D0001AC  AFA40008   SW A0, 8(SP)
+9D0001B0  AFA30004   SW V1, 4(SP)
+9D0001B4  AFA20000   SW V0, 0(SP)
+9D0001B8  03A0F021   ADDU S8, SP, ZERO
+60:                    if(IFS1bits.U1RXIF == 1){ // Ha interrumpido el receptor
+9D0001BC  3C02BF88   LUI V0, -16504
+9D0001C0  8C421040   LW V0, 4160(V0)
+9D0001C4  30420100   ANDI V0, V0, 256
+9D0001C8  10400023   BEQ V0, ZERO, 0x9D000258
+9D0001CC  00000000   NOP
+61:                      if( (icabeza+1 == icola) ||
+9D0001D0  8F828010   LW V0, -32752(GP)
+9D0001D4  24430001   ADDIU V1, V0, 1
+9D0001D8  8F828014   LW V0, -32748(GP)
+9D0001DC  1062001A   BEQ V1, V0, 0x9D000248
+9D0001E0  00000000   NOP
+9D0001E8  24020063   ADDIU V0, ZERO, 99
+9D0001EC  14620006   BNE V1, V0, 0x9D000208
+9D0001F0  00000000   NOP
+62:                        (icabeza+1 == TAM_COLA && icola == 0)){
+9D0001E4  8F838010   LW V1, -32752(GP)
+9D0001F4  8F828014   LW V0, -32748(GP)
+9D0001F8  14400003   BNE V0, ZERO, 0x9D000208
+9D0001FC  00000000   NOP
+9D000200  0B400092   J 0x9D000248
+9D000204  00000000   NOP
+63:                        // La cola está llena
+64:                      }else{
+65:                        cola[icabeza] = U1RXREG; // Lee carácter de la UART
+9D000208  8F848010   LW A0, -32752(GP)
+9D00020C  3C02BF80   LUI V0, -16512
+9D000210  8C426030   LW V0, 24624(V0)
+9D000214  7C021C20   SEB V1, V0
+9D000218  3C02A000   LUI V0, -24576
+9D00021C  24420208   ADDIU V0, V0, 520
+9D000220  00821021   ADDU V0, A0, V0
+9D000224  A0430000   SB V1, 0(V0)
+66:                        icabeza++;
+9D000228  8F828010   LW V0, -32752(GP)
+9D00022C  24420001   ADDIU V0, V0, 1
+9D000230  AF828010   SW V0, -32752(GP)
+67:                        if(icabeza == TAM_COLA){
+9D000234  8F838010   LW V1, -32752(GP)
+9D000238  24020064   ADDIU V0, ZERO, 100
+9D00023C  14620002   BNE V1, V0, 0x9D000248
+9D000240  00000000   NOP
+68:                          icabeza = 0;
+9D000244  AF808010   SW ZERO, -32752(GP)
+69:                        }
+70:                      }
+71:                      IFS1bits.U1RXIF = 0; // Y para terminar se borra el flag
+9D000248  3C03BF88   LUI V1, -16504
+9D00024C  8C621040   LW V0, 4160(V1)
+9D000250  7C024204   INS V0, ZERO, 8, 1
+9D000254  AC621040   SW V0, 4160(V1)
+72:                    }
+73:                    if(IFS1bits.U1TXIF == 1){ // Ha interrumpido el transmisor
+9D000258  3C02BF88   LUI V0, -16504
+9D00025C  8C421040   LW V0, 4160(V0)
+9D000260  30420200   ANDI V0, V0, 512
+9D000264  1040002C   BEQ V0, ZERO, 0x9D000318
+9D000268  00000000   NOP
+74:                      // Se extrae un carácter de la cola y se envía
+75:                      if(cola_envio.icola != cola_envio.icabeza){ // Hay datos nuevos
+9D00026C  3C02A000   LUI V0, -24576
+9D000270  2442026C   ADDIU V0, V0, 620
+9D000274  8C430004   LW V1, 4(V0)
+9D000278  3C02A000   LUI V0, -24576
+9D00027C  8C42026C   LW V0, 620(V0)
+9D000280  1062001D   BEQ V1, V0, 0x9D0002F8
+9D000284  00000000   NOP
+76:                        U1TXREG = cola_envio.cola[cola_envio.icola];
+9D000288  3C02A000   LUI V0, -24576
+9D00028C  2442026C   ADDIU V0, V0, 620
+9D000290  8C430004   LW V1, 4(V0)
+9D000294  3C02A000   LUI V0, -24576
+9D000298  2442026C   ADDIU V0, V0, 620
+9D00029C  00621021   ADDU V0, V1, V0
+9D0002A0  80420008   LB V0, 8(V0)
+9D0002A4  00401821   ADDU V1, V0, ZERO
+9D0002A8  3C02BF80   LUI V0, -16512
+9D0002AC  AC436020   SW V1, 24608(V0)
+77:                        cola_envio.icola++;
+9D0002B0  3C02A000   LUI V0, -24576
+9D0002B4  2442026C   ADDIU V0, V0, 620
+9D0002B8  8C420004   LW V0, 4(V0)
+9D0002BC  24430001   ADDIU V1, V0, 1
+9D0002C0  3C02A000   LUI V0, -24576
+9D0002C4  2442026C   ADDIU V0, V0, 620
+9D0002C8  AC430004   SW V1, 4(V0)
+78:                        if(cola_envio.icola == TAM_COLA){
+9D0002CC  3C02A000   LUI V0, -24576
+9D0002D0  2442026C   ADDIU V0, V0, 620
+9D0002D4  8C430004   LW V1, 4(V0)
+9D0002D8  24020064   ADDIU V0, ZERO, 100
+9D0002DC  1462000A   BNE V1, V0, 0x9D000308
+9D0002E0  00000000   NOP
+79:                          cola_envio.icola = 0;
+9D0002E4  3C02A000   LUI V0, -24576
+9D0002E8  2442026C   ADDIU V0, V0, 620
+9D0002EC  AC400004   SW ZERO, 4(V0)
+9D0002F0  0B4000C2   J 0x9D000308
+9D0002F4  00000000   NOP
+80:                        }
+81:                      }else{ // Se ha vaciado la cola.
+82:                        U1STAbits.UTXEN = 0; // Se inhabilita el transmisor
+9D0002F8  3C03BF80   LUI V1, -16512
+9D0002FC  8C626010   LW V0, 24592(V1)
+9D000300  7C025284   INS V0, ZERO, 10, 1
+9D000304  AC626010   SW V0, 24592(V1)
+83:                      }
+84:                      IFS1bits.U1TXIF = 0; // Y para terminar se borra el flag
+9D000308  3C03BF88   LUI V1, -16504
+9D00030C  8C621040   LW V0, 4160(V1)
+9D000310  7C024A44   INS V0, ZERO, 9, 1
+9D000314  AC621040   SW V0, 4160(V1)
+85:                    }    
+86:                  }
+9D000318  03C0E821   ADDU SP, S8, ZERO
+9D00031C  8FBE000C   LW S8, 12(SP)
+9D000320  8FA40008   LW A0, 8(SP)
+9D000324  8FA30004   LW V1, 4(SP)
+9D000328  8FA20000   LW V0, 0(SP)
+9D00032C  41606000   DI ZERO
+9D000330  000000C0   EHB
+9D000334  8FBA001C   LW K0, 28(SP)
+9D000338  8FBB0018   LW K1, 24(SP)
+9D00033C  409A7000   MTC0 K0, EPC
+9D000340  8FBA0014   LW K0, 20(SP)
+9D000344  27BD0020   ADDIU SP, SP, 32
+9D000348  409A6002   MTC0 K0, SRSCtl
+9D00034C  41DDE800   WRPGPR SP, SP
+9D000350  409B6000   MTC0 K1, Status
+9D000354  42000018   ERET
+87:                  
+88:                  /**
+89:                   * Extrae un carácter de la cola de recepción y lo devuelve. Si la cola
+90:                   * está vacía devuelve un \0.
+91:                   *
+92:                   * @return  caracter extraído de la cola
+93:                   */
+94:                  
+95:                  char getcUART(void)
+96:                  {
+9D000358  27BDFFF0   ADDIU SP, SP, -16
+9D00035C  AFBE000C   SW S8, 12(SP)
+9D000360  03A0F021   ADDU S8, SP, ZERO
+97:                    char c;
+98:                    
+99:                    if(icola != icabeza){ // Hay datos nuevos
+9D000364  8F838014   LW V1, -32748(GP)
+9D000368  8F828010   LW V0, -32752(GP)
+9D00036C  10620011   BEQ V1, V0, 0x9D0003B4
+9D000370  00000000   NOP
+100:                 	c = cola[icola];
+9D000374  8F838014   LW V1, -32748(GP)
+9D000378  3C02A000   LUI V0, -24576
+9D00037C  24420208   ADDIU V0, V0, 520
+9D000380  00621021   ADDU V0, V1, V0
+9D000384  90420000   LBU V0, 0(V0)
+9D000388  A3C20000   SB V0, 0(S8)
+101:                 	icola++;
+9D00038C  8F828014   LW V0, -32748(GP)
+9D000390  24420001   ADDIU V0, V0, 1
+9D000394  AF828014   SW V0, -32748(GP)
+102:                 	if(icola == TAM_COLA){
+9D000398  8F838014   LW V1, -32748(GP)
+9D00039C  24020064   ADDIU V0, ZERO, 100
+9D0003A0  14620005   BNE V1, V0, 0x9D0003B8
+9D0003A4  00000000   NOP
+103:                 	  icola=0;
+9D0003A8  AF808014   SW ZERO, -32748(GP)
+9D0003AC  0B4000EE   J 0x9D0003B8
+9D0003B0  00000000   NOP
+104:                 	}
+105:                   }else{ // no ha llegado nada
+106:                     c = '\0';
+9D0003B4  A3C00000   SB ZERO, 0(S8)
+107:                   }
+108:                   
+109:                   return c;
+9D0003B8  83C20000   LB V0, 0(S8)
+110:                 }
+9D0003BC  03C0E821   ADDU SP, S8, ZERO
+9D0003C0  8FBE000C   LW S8, 12(SP)
+9D0003C4  27BD0010   ADDIU SP, SP, 16
+9D0003C8  03E00008   JR RA
+9D0003CC  00000000   NOP
+111:                 
+112:                 /**
+113:                  * Envía un carácter a la UART1 y habilita el transmisor para que se envíe
+114:                  * 
+115:                  * @param c carácter a enviar
+116:                  */
+117:                 void putcUART(char c)
+118:                 {
+9D0003D0  27BDFFF8   ADDIU SP, SP, -8
+9D0003D4  AFBE0004   SW S8, 4(SP)
+9D0003D8  03A0F021   ADDU S8, SP, ZERO
+9D0003DC  00801021   ADDU V0, A0, ZERO
+9D0003E0  A3C20008   SB V0, 8(S8)
+119:                   if( (cola_envio.icabeza+1 == cola_envio.icola) ||
+9D0003E4  3C02A000   LUI V0, -24576
+9D0003E8  8C42026C   LW V0, 620(V0)
+9D0003EC  24430001   ADDIU V1, V0, 1
+9D0003F0  3C02A000   LUI V0, -24576
+9D0003F4  2442026C   ADDIU V0, V0, 620
+9D0003F8  8C420004   LW V0, 4(V0)
+9D0003FC  10620020   BEQ V1, V0, 0x9D000480
+9D000400  00000000   NOP
+9D00040C  24020063   ADDIU V0, ZERO, 99
+9D000410  14620008   BNE V1, V0, 0x9D000434
+9D000414  00000000   NOP
+120:                       (cola_envio.icabeza+1 == TAM_COLA && cola_envio.icola == 0)){
+9D000404  3C02A000   LUI V0, -24576
+9D000408  8C43026C   LW V1, 620(V0)
+9D000418  3C02A000   LUI V0, -24576
+9D00041C  2442026C   ADDIU V0, V0, 620
+9D000420  8C420004   LW V0, 4(V0)
+9D000424  14400003   BNE V0, ZERO, 0x9D000434
+9D000428  00000000   NOP
+9D00042C  0B400120   J 0x9D000480
+9D000430  00000000   NOP
+121:                     // La cola está llena
+122:                   }else{
+123:                     cola_envio.cola[cola_envio.icabeza] = c; // Copia el carácter en la cola
+9D000434  3C02A000   LUI V0, -24576
+9D000438  8C43026C   LW V1, 620(V0)
+9D00043C  3C02A000   LUI V0, -24576
+9D000440  2442026C   ADDIU V0, V0, 620
+9D000444  00621021   ADDU V0, V1, V0
+9D000448  93C30008   LBU V1, 8(S8)
+9D00044C  A0430008   SB V1, 8(V0)
+124:                     cola_envio.icabeza++;
+9D000450  3C02A000   LUI V0, -24576
+9D000454  8C42026C   LW V0, 620(V0)
+9D000458  24430001   ADDIU V1, V0, 1
+9D00045C  3C02A000   LUI V0, -24576
+9D000460  AC43026C   SW V1, 620(V0)
+125:                     if(cola_envio.icabeza == TAM_COLA){
+9D000464  3C02A000   LUI V0, -24576
+9D000468  8C43026C   LW V1, 620(V0)
+9D00046C  24020064   ADDIU V0, ZERO, 100
+9D000470  14620003   BNE V1, V0, 0x9D000480
+9D000474  00000000   NOP
+126:                       cola_envio.icabeza = 0;
+9D000478  3C02A000   LUI V0, -24576
+9D00047C  AC40026C   SW ZERO, 620(V0)
+127:                     }
+128:                   }
+129:                   U1STAbits.UTXEN = 1; // Se habilita el transmisor
+9D000480  3C03BF80   LUI V1, -16512
+9D000484  8C626010   LW V0, 24592(V1)
+9D000488  24040001   ADDIU A0, ZERO, 1
+9D00048C  7C825284   INS V0, A0, 10, 1
+9D000490  AC626010   SW V0, 24592(V1)
+130:                   IFS1bits.U1TXIF = 1; // Se genera una interrupción para empezar a enviar.
+9D000494  3C03BF88   LUI V1, -16504
+9D000498  8C621040   LW V0, 4160(V1)
+9D00049C  24040001   ADDIU A0, ZERO, 1
+9D0004A0  7C824A44   INS V0, A0, 9, 1
+9D0004A4  AC621040   SW V0, 4160(V1)
+131:                 }
+9D0004A8  03C0E821   ADDU SP, S8, ZERO
+9D0004AC  8FBE0004   LW S8, 4(SP)
+9D0004B0  27BD0008   ADDIU SP, SP, 8
+9D0004B4  03E00008   JR RA
+9D0004B8  00000000   NOP
+132:                 
+133:                 /**
+134:                  * Envia una cadena de caracteres a la cola de transmisión y habilita
+135:                  * el transmisor para que se envíe
+136:                  * 
+137:                  * @param s cadena de caracteres a enviar
+138:                  */
+139:                 void putsUART(char s[])
+140:                 {
+9D0004BC  27BDFFF8   ADDIU SP, SP, -8
+9D0004C0  AFBE0004   SW S8, 4(SP)
+9D0004C4  03A0F021   ADDU S8, SP, ZERO
+9D0004C8  AFC40008   SW A0, 8(S8)
+141:                   while(*s != '\0'){
+9D0004CC  0B40015D   J 0x9D000574
+9D0004D0  00000000   NOP
+9D000574  8FC20008   LW V0, 8(S8)
+9D000578  80420000   LB V0, 0(V0)
+9D00057C  1440FFD5   BNE V0, ZERO, 0x9D0004D4
+9D000580  00000000   NOP
+142:                     if( (cola_envio.icabeza+1 == cola_envio.icola) ||
+9D0004D4  3C02A000   LUI V0, -24576
+9D0004D8  8C42026C   LW V0, 620(V0)
+9D0004DC  24430001   ADDIU V1, V0, 1
+9D0004E0  3C02A000   LUI V0, -24576
+9D0004E4  2442026C   ADDIU V0, V0, 620
+9D0004E8  8C420004   LW V0, 4(V0)
+9D0004EC  10620025   BEQ V1, V0, 0x9D000584
+9D0004F0  00000000   NOP
+9D0004FC  24020063   ADDIU V0, ZERO, 99
+9D000500  14620006   BNE V1, V0, 0x9D00051C
+9D000504  00000000   NOP
+143:                       (cola_envio.icabeza+1 == TAM_COLA && cola_envio.icola == 0)){
+9D0004F4  3C02A000   LUI V0, -24576
+9D0004F8  8C43026C   LW V1, 620(V0)
+9D000508  3C02A000   LUI V0, -24576
+9D00050C  2442026C   ADDIU V0, V0, 620
+9D000510  8C420004   LW V0, 4(V0)
+9D000514  1040001B   BEQ V0, ZERO, 0x9D000584
+9D000518  00000000   NOP
+144:                       // La cola está llena. Se aborta el envío de los caracteres que restan
+145:                       break;
+146:                     }else{
+147:                       cola_envio.cola[cola_envio.icabeza] = *s++; // Copia el carácter en la cola
+9D00051C  3C02A000   LUI V0, -24576
+9D000520  8C44026C   LW A0, 620(V0)
+9D000524  8FC20008   LW V0, 8(S8)
+9D000528  24430001   ADDIU V1, V0, 1
+9D00052C  AFC30008   SW V1, 8(S8)
+9D000530  80430000   LB V1, 0(V0)
+9D000534  3C02A000   LUI V0, -24576
+9D000538  2442026C   ADDIU V0, V0, 620
+9D00053C  00821021   ADDU V0, A0, V0
+9D000540  A0430008   SB V1, 8(V0)
+148:                       cola_envio.icabeza++;
+9D000544  3C02A000   LUI V0, -24576
+9D000548  8C42026C   LW V0, 620(V0)
+9D00054C  24430001   ADDIU V1, V0, 1
+9D000550  3C02A000   LUI V0, -24576
+9D000554  AC43026C   SW V1, 620(V0)
+149:                       if(cola_envio.icabeza == TAM_COLA){
+9D000558  3C02A000   LUI V0, -24576
+9D00055C  8C43026C   LW V1, 620(V0)
+9D000560  24020064   ADDIU V0, ZERO, 100
+9D000564  14620003   BNE V1, V0, 0x9D000574
+9D000568  00000000   NOP
+150:                         cola_envio.icabeza = 0;
+9D00056C  3C02A000   LUI V0, -24576
+9D000570  AC40026C   SW ZERO, 620(V0)
+151:                       }
+152:                     } 
+153:                   }
+154:                   U1STAbits.UTXEN = 1; // Se habilita el transmisor
+9D000584  3C03BF80   LUI V1, -16512
+9D000588  8C626010   LW V0, 24592(V1)
+9D00058C  24040001   ADDIU A0, ZERO, 1
+9D000590  7C825284   INS V0, A0, 10, 1
+9D000594  AC626010   SW V0, 24592(V1)
+155:                   IFS1bits.U1TXIF = 1; // Se genera una interrupción para empezar a enviar.
+9D000598  3C03BF88   LUI V1, -16504
+9D00059C  8C621040   LW V0, 4160(V1)
+9D0005A0  24040001   ADDIU A0, ZERO, 1
+9D0005A4  7C824A44   INS V0, A0, 9, 1
+9D0005A8  AC621040   SW V0, 4160(V1)
+156:                 }
+9D0005AC  03C0E821   ADDU SP, S8, ZERO
+9D0005B0  8FBE0004   LW S8, 4(SP)
+9D0005B4  27BD0008   ADDIU SP, SP, 8
+9D0005B8  03E00008   JR RA
+9D0005BC  00000000   NOP
+---  /home/daniel/Asignaturas/Microprocesadores 3 GITT/Laboratorio/Practica7/code/Practica7.X/Pic32Ini.c  
+1:                   #include <xc.h>
+2:                   #include "Pic32Ini.h"
+3:                   
+4:                   // Configuration bits: selected in the GUI (MCC)
+5:                   
+6:                   // DEVCFG3
+7:                   #pragma config PMDL1WAY = ON    // Peripheral Module Disable Configuration->Allow only one reconfiguration
+8:                   #pragma config IOL1WAY = ON    // Peripheral Pin Select Configuration->Allow only one reconfiguration
+9:                   #pragma config FUSBIDIO = ON    // USB USID Selection->Controlled by the USB Module
+10:                  #pragma config FVBUSONIO = ON    // USB VBUS ON Selection->Controlled by USB Module
+11:                  
+12:                  // DEVCFG2
+13:                  #pragma config FPLLIDIV = DIV_2    // PLL Input Divider->2x Divider
+14:                  #pragma config FPLLMUL = MUL_20    // PLL Multiplier->20x Multiplier
+15:                  #pragma config UPLLIDIV = DIV_12    // USB PLL Input Divider->12x Divider
+16:                  #pragma config UPLLEN = OFF    // USB PLL Enable->Disabled and Bypassed
+17:                  #pragma config FPLLODIV = DIV_2    // System PLL Output Clock Divider->PLL Divide by 2
+18:                  
+19:                  // DEVCFG1
+20:                  #pragma config FNOSC = PRIPLL    // Oscillator Selection Bits->Primary Osc w/PLL (XT+,HS+,EC+PLL)
+21:                  #pragma config FSOSCEN = OFF    // Secondary Oscillator Enable->Disabled
+22:                  #pragma config IESO = ON    // Internal/External Switch Over->Enabled
+23:                  #pragma config POSCMOD = XT    // Primary Oscillator Configuration->XT osc mode
+24:                  #pragma config OSCIOFNC = OFF    // CLKO Output Signal Active on the OSCO Pin->Disabled
+25:                  #pragma config FPBDIV = DIV_8    // Peripheral Clock Divisor->Pb_Clk is Sys_Clk/8
+26:                  #pragma config FCKSM = CSDCMD    // Clock Switching and Monitor Selection->Clock Switch Disable, FSCM Disabled
+27:                  #pragma config WDTPS = PS1048576    // Watchdog Timer Postscaler->1:1048576
+28:                  #pragma config WINDIS = OFF    // Watchdog Timer Window Enable->Watchdog Timer is in Non-Window Mode
+29:                  #pragma config FWDTEN = OFF    // Watchdog Timer Enable->WDT Disabled (SWDTEN Bit Controls)
+30:                  #pragma config FWDTWINSZ = WINSZ_25    // Watchdog Timer Window Size->Window Size is 25%
+31:                  
+32:                  // DEVCFG0
+33:                  #pragma config DEBUG = OFF    // Background Debugger Enable->Debugger is Disabled
+34:                  #pragma config JTAGEN = ON    // JTAG Enable->JTAG Port Enabled
+35:                  #pragma config ICESEL = ICS_PGx1    // ICE/ICD Comm Channel Select->Communicate on PGEC1/PGED1
+36:                  #pragma config PWP = OFF    // Program Flash Write Protect->Disable
+37:                  #pragma config BWP = OFF    // Boot Flash Write Protect bit->Protection Disabled
+38:                  #pragma config CP = OFF    // Code Protect->Protection Disabled
+39:                  
+40:                  
+41:                  void InicializarReloj(void)
+42:                  {
+9D0007B4  27BDFFF8   ADDIU SP, SP, -8
+9D0007B8  AFBE0004   SW S8, 4(SP)
+9D0007BC  03A0F021   ADDU S8, SP, ZERO
+43:                      SYSKEY = 0x0;         // Nos aseguramos que OSCCON está bloqueado
+9D0007C0  3C02BF81   LUI V0, -16511
+9D0007C4  AC40F230   SW ZERO, -3536(V0)
+44:                      SYSKEY = 0xAA996655;  // Se escribe la primera clave en SYSKEY
+9D0007C8  3C02BF81   LUI V0, -16511
+9D0007CC  3C03AA99   LUI V1, -21863
+9D0007D0  34636655   ORI V1, V1, 26197
+9D0007D4  AC43F230   SW V1, -3536(V0)
+45:                      SYSKEY = 0x556699AA;  // Se escribe la segunda clave en SYSKEY
+9D0007D8  3C02BF81   LUI V0, -16511
+9D0007DC  3C035566   LUI V1, 21862
+9D0007E0  346399AA   ORI V1, V1, -26198
+9D0007E4  AC43F230   SW V1, -3536(V0)
+46:                      //  Ahora OSCCON está desbloqueado y podemos modificarlo
+47:                      
+48:                      // Se configura el reloj para usar el oscilador externo usando PLL.
+49:                      // El oscilador está dividido entre 2, pues el PLL ha de tener una entrada
+50:                      // entre 4 y 5 MHz (DEVCFG3.FPLLIDIV = 001).
+51:                      // Al PLL entran por tanto 8MHz/2 = 4 MHz, luego el PLL lo
+52:                      // Multiplica por 20 (80 MHz) y esta salida se divide entre 2 para 
+53:                      // obtener un reloj principal a 40 MHz. Este reloj se divide por 8 para
+54:                      // obtener el reloj del bus de periféricos. Para ello, en el
+55:                      // registro OSCCON se hace:
+56:                      // PLLODIV = 001 (div. por 2)
+57:                      // PBDIV = 11 (div. por 8)
+58:                      // PLLMULT = 101 (mult. por 20)
+59:                      // COSC = 011 (Oscilador principal con PLL)
+60:                      // NOSC = 011 (Oscilador principal con PLL)
+61:                      OSCCON = 0x081D3300;
+9D0007E8  3C02BF81   LUI V0, -16511
+9D0007EC  3C03081D   LUI V1, 2077
+9D0007F0  34633300   ORI V1, V1, 13056
+9D0007F4  AC43F000   SW V1, -4096(V0)
+62:                  
+63:                      // Una vez hemos terminado, lo volvemos a bloquear
+64:                      SYSKEY = 0x0;
+9D0007F8  3C02BF81   LUI V0, -16511
+9D0007FC  AC40F230   SW ZERO, -3536(V0)
+65:                  }
+9D000800  03C0E821   ADDU SP, S8, ZERO
+9D000804  8FBE0004   LW S8, 4(SP)
+9D000808  27BD0008   ADDIU SP, SP, 8
+9D00080C  03E00008   JR RA
+9D000810  00000000   NOP
