@@ -66,3 +66,4 @@ int main(void) {
         puls_dec_ant = puls_dec_act;
     }
 }
+

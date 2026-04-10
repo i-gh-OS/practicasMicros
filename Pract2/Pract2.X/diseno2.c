@@ -20,14 +20,14 @@ int main(void) {
     pulsador_ant = (PORTB >> PIN_PULSADOR)&1;
 
     while (1) {
-
         pulsador_act = (PORTB >> PIN_PULSADOR)&1;
         if ((pulsador_act != pulsador_ant) && (pulsador_act == 0)) {
-            posicion++;
+            LATCSET = 0xF;
+            LATCCLR = (1<<posicion);
             if (posicion > 3) {
                 posicion = 0;
             }
-            LATC = 0x000F&~(1<<posicion);
+            posicion++;
         }
         pulsador_ant = pulsador_act;
     }

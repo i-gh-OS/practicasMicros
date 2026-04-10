@@ -41,7 +41,6 @@ int main(void) {
             if (angulo > 90) {
                 angulo = -90;
             }
-            
             t_alto = 1250 + ((angulo + 90) * (6250 - 1250)) / 180;
             OC1RS = t_alto;
         }
